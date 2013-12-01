@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 import lipermi.call.IRemoteMessage;
 import lipermi.call.RemoteCall;
@@ -80,7 +81,8 @@ public class ConnectionHandler implements Runnable {
 	
 	private ObjectOutputStream output;
 
-	private Long callId = 0L;
+//	private Long callId = 0L;
+	private AtomicLong callId = new AtomicLong(0);
 	
 	private IProtocolFilter filter;
 	
@@ -182,7 +184,8 @@ public class ConnectionHandler implements Runnable {
 
 
 	final Object remoteInvocation(final Object proxy, final Method method, final Object[] args) throws Throwable {
-		final Long id = callId++;
+//		final Long id = callId++;
+		final Long id = callId.getAndIncrement();
 		 
 		RemoteInstance remoteInstance;
 		remoteInstance = getRemoteInstanceFromProxy(proxy);
